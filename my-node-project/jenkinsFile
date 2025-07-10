@@ -29,12 +29,12 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('My SonarQube') {
-                    sh "${tool SONARQUBE_SCANNER}/bin/sonar-scanner"
-                }
-            }
+    steps {
+        withSonarQubeEnv('My SonarQube') {
+            sh "${tool 'SonarQubeScanner'}/bin/sonar-scanner"
         }
+    }
+}
 
         stage("Quality Gate") {
             steps {
