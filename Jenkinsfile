@@ -18,12 +18,17 @@ pipeline {
             }
         }
 
-   stage('Run Tests & Generate Coverage') {
-    steps {
-        sh 'chmod +x ./node_modules/.bin/jest && ./node_modules/.bin/jest --coverage'
-    }
-}
+      stage('Fix Jest Permissions') {
+            steps {
+                sh 'chmod +x ./node_modules/.bin/jest'
+            }
+        }
 
+        stage('Run Tests') {
+            steps {
+                sh 'npx jest --ci --reporters=default --reporters=jest-junit'
+            }
+        }
 
 
         stage('SonarQube Analysis') {
