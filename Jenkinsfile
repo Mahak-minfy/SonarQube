@@ -2,44 +2,40 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS_18'                     // Ensure this NodeJS version is configured in Jenkins
-    }
-
-    environment {
-        SONARQUBE_SCANNER = 'MySonarQube' // This is the name from Global Tool Config
+        nodejs 'NodeJS_18'   // NodeJS tool name configured in Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm                    // Clones from GitHub as configured in Jenkins
+                checkout scm   // Pulls code from GitHub
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'                // Installs project dependencies
+                sh 'npm install'   // Installs dependencies from package.json
             }
         }
 
         stage('Run Tests & Generate Coverage') {
             steps {
-                sh 'npm test -- --coverage'     // Runs tests and generates coverage report (optional for Sonar)
+                sh 'npx jest --coverage'   // Runs Jest tests with coverage
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('My SonarQube') {   // Matches the SonarQube server name from Jenkins config
-                    sh "${tool 'SonarQubeScanner'}/bin/sonar-scanner"   // Runs the scanner
+                withSonarQubeEnv('My SonarQube') {   // SonarQube server name from Jenkins
+                    sh "${tool 'SonarQubeScanner'}/bin/sonar-scanner"
                 }
             }
         }
 
         stage("Quality Gate") {
             steps {
-                timeout(time: 2, unit: 'MINUTES') {  // Increased timeout slightly
-                    waitForQualityGate abortPipeline: true  // Stops pipeline if Quality Gate fails
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true   // Stop if quality gate fails
                 }
             }
         }
