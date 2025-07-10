@@ -1,0 +1,1 @@
+ 2xmlXÒhr.node_modules/sonar-scanner/.idea/workspace.xml

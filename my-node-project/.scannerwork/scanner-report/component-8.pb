@@ -1,0 +1,1 @@
+ 2xmlXhr6node_modules/sonar-scanner/.idea/jsLibraryMappings.xml
