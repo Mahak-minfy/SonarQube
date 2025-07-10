@@ -18,11 +18,13 @@ pipeline {
             }
         }
 
-        stage('Run Tests & Generate Coverage') {
-            steps {
-                sh 'npx jest --coverage'   // Runs Jest tests with coverage
-            }
-        }
+   stage('Run Tests & Generate Coverage') {
+    steps {
+        sh 'chmod +x ./node_modules/.bin/jest && ./node_modules/.bin/jest --coverage'
+    }
+}
+
+
 
         stage('SonarQube Analysis') {
             steps {
